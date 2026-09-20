@@ -146,7 +146,7 @@ export const loveConfig = {
    * backend. Visit  /admin  on your phone and type this password to read
    * it all. Change this to something she would never guess.
    * ---------------------------------------------------------------- */
-  adminPassword: 'Snelay2501',
+  adminPassword: import.meta.env.VITE_ADMIN_PASSWORD || '',
 } as const;
 
 /* ---------------------------------------------------------------------------
