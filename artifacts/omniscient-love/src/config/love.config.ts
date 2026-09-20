@@ -51,7 +51,7 @@ export const loveConfig = {
      * takes over the screen with the midnight surprise.
      */
     surpriseHour: 17,
-    surpriseMinute: 28,
+    surpriseMinute: 31,
   },
 
   /** The day you two started. Used for the "days together" counter. */
