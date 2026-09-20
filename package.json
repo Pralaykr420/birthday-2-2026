@@ -1,0 +1,22 @@
+{
+  "name": "omniscient-love-experience",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"@workspace/*\" dev",
+    "dev:app": "pnpm --filter @workspace/omniscient-love dev",
+    "dev:api": "pnpm --filter @workspace/api-server dev",
+    "build": "pnpm --filter @workspace/omniscient-love build && pnpm --filter @workspace/api-server build",
+    "typecheck": "pnpm -r typecheck",
+    "check:mongo": "node tools/check-mongo.mjs"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,368 @@
+/* ============================================================================
+ *  The look of the app, in one file.
+ *
+ *  Section 1  Fonts
+ *  Section 2  Colours and sizes (change these to restyle everything)
+ *  Section 3  Base rules
+ *  Section 4  Reusable pieces
+ *  Section 5  Movement
+ *
+ *  To change the colour scheme, you only need Section 2.
+ * ========================================================================= */
+
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+ * 1. FONTS
+ *
+ * Three typefaces, each with one job:
+ *   Fraunces  - the big romantic headlines
+ *   Nunito    - everything you read normally
+ *   Caveat    - handwriting, used only for letters and notes
+ *
+ * They are loaded by a <link> tag in index.html rather than here, so the
+ * browser starts fetching them straight away instead of waiting until it has
+ * parsed this stylesheet. Every font below also has a real fallback, so the
+ * app stays readable if Google Fonts is blocked or unreachable.
+ * ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+ * 2. COLOURS AND SIZES
+ *
+ * Everything in the app reads from these. Change a hex code here and that
+ * colour updates in every screen at once.
+ * ------------------------------------------------------------------------ */
+:root {
+  /* Backgrounds, darkest to lightest */
+  --ink: #17101e;          /* the page itself - deep plum, not black */
+  --velvet: #241a2e;       /* cards sitting on the page */
+  --velvet-high: #322443;  /* things sitting on cards */
+
+  /* Accents */
+  --candle: #f7c873;       /* warm gold - the main accent, used sparingly */
+  --candle-soft: #ffe3ac;
+  --blush: #f2899f;        /* rose - hearts, love, anything affectionate */
+  --sage: #7fb59b;         /* green - success, correct answers */
+
+  /* Text */
+  --petal: #fbede4;        /* main reading colour, warm white */
+  --dusk: #a89ab4;         /* secondary text */
+  --smoke: #6f6479;        /* hints, captions, timestamps */
+  --bengali: #d8c2c8;      /* Kolkata Bengali secondary copy */
+
+  /* Paper, for letters */
+  --paper: #efe1c9;
+  --paper-ink: #3a2c33;
+
+  /* Shape */
+  --radius: 22px;
+  --radius-sm: 14px;
+  --hairline: rgba(247, 200, 115, 0.16);
+
+  /* Layout. Phones with a notch report a safe area; we respect it so
+     nothing sits underneath the home indicator. */
+  --nav-height: 68px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+
+  /* Fonts */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+  --font-hand: 'Caveat', cursive;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-velvet: var(--velvet);
+  --color-velvet-high: var(--velvet-high);
+  --color-candle: var(--candle);
+  --color-candle-soft: var(--candle-soft);
+  --color-blush: var(--blush);
+  --color-sage: var(--sage);
+  --color-petal: var(--petal);
+  --color-dusk: var(--dusk);
+  --color-smoke: var(--smoke);
+  --color-paper: var(--paper);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-hand: var(--font-hand);
+}
+
+/* ---------------------------------------------------------------------------
+ * 3. BASE RULES
+ * ------------------------------------------------------------------------ */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--ink);
+    /* Stops iOS Safari resizing text when the phone is turned sideways. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--petal);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    /* Stops the whole page bouncing when she scrolls past the end on iOS. */
+    overscroll-behavior-y: none;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    /* Keeps paragraphs comfortable to read - roughly 65 characters wide. */
+    max-width: 62ch;
+  }
+
+  /* Remove the grey flash Android draws over anything you tap. */
+  button, a, [role='button'] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  /* Anyone navigating with a keyboard needs to see where they are. */
+  :focus-visible {
+    outline: 2px solid var(--candle);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  input, textarea {
+    font-family: inherit;
+    font-size: 16px; /* Below 16px, iOS zooms in when she starts typing. */
+    color: inherit;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 4. REUSABLE PIECES
+ * ------------------------------------------------------------------------ */
+
+/* The page wrapper. On a phone it is edge to edge; on a laptop it centres
+   itself at phone width so the layout never stretches into something ugly. */
+.screen {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 20px;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom) + 28px);
+}
+
+.surface {
+  background: var(--velvet);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+
+/* Type scale. Named by role rather than size, so renaming never breaks. */
+.t-hero {
+  font-family: var(--font-display);
+  font-size: clamp(2.9rem, 13vw, 4.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+
+.t-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 8.5vw, 2.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+
+.t-heading {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1.15;
+}
+
+.t-body {
+  font-size: 0.975rem;
+  line-height: 1.7;
+  color: var(--dusk);
+}
+
+.t-small {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--smoke);
+}
+
+.t-hand {
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  line-height: 1.5;
+}
+
+/* Every tappable thing is at least 44px tall. That is the smallest target a
+   thumb reliably hits, and it is not negotiable on a phone. */
+.tappable {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* The faint grain over everything. It stops the flat dark background from
+   looking like a dead screen and hides colour banding in the glows. */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Two big soft lights behind the content, like candles off-screen. */
+.glow {
+  position: fixed;
+  z-index: 0;
+  width: 78vw;
+  height: 78vw;
+  max-width: 460px;
+  max-height: 460px;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  opacity: 0.2;
+}
+.glow-warm {
+  background: var(--candle);
+  top: -14%;
+  right: -28%;
+}
+.glow-rose {
+  background: var(--blush);
+  bottom: 4%;
+  left: -32%;
+  opacity: 0.14;
+}
+
+.above {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * 5. MOVEMENT
+ *
+ * Kept deliberately short. Motion here either answers a tap or draws the eye
+ * to one thing. Anything that moves forever is a candle, a star, or a heart.
+ * ------------------------------------------------------------------------ */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.5); }
+}
+
+@keyframes flicker {
+  0%, 100% { transform: rotate(-3deg) scaleY(1);    opacity: 1; }
+  25%      { transform: rotate(2deg)  scaleY(1.08); opacity: 0.92; }
+  50%      { transform: rotate(-1deg) scaleY(0.95); opacity: 1; }
+  75%      { transform: rotate(3deg)  scaleY(1.05); opacity: 0.95; }
+}
+
+@keyframes heartbeat {
+  0%, 100%  { transform: scale(1); }
+  14%       { transform: scale(1.14); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.1); }
+  70%       { transform: scale(1); }
+}
+
+@keyframes floatUp {
+  from { opacity: 1; transform: translate(0, 0) scale(0.6) rotate(0deg); }
+  to   { opacity: 0; transform: translate(var(--drift, 0px), -190px) scale(1.25) rotate(var(--spin, 20deg)); }
+}
+
+@keyframes shimmer {
+  from { background-position: -220% 0; }
+  to   { background-position: 220% 0; }
+}
+
+.anim-rise      { animation: rise 0.6s cubic-bezier(0.22, 0.8, 0.3, 1) both; }
+.anim-fade      { animation: fade 0.5s ease both; }
+.anim-twinkle   { animation: twinkle 3.6s ease-in-out infinite; }
+.anim-flicker   { animation: flicker 0.9s ease-in-out infinite; transform-origin: 50% 100%; }
+.anim-heartbeat { animation: heartbeat 1.9s ease-in-out infinite; }
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.32s; }
+.delay-4 { animation-delay: 0.44s; }
+
+/* The gold text sweep, used once, on the midnight greeting only. */
+.shimmer-text {
+  background: linear-gradient(
+    100deg,
+    var(--candle) 20%,
+    #fff6e2 42%,
+    var(--candle) 62%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 3.4s linear infinite;
+}
+
+/* Some people get motion sick, and some just turn animation off. Respect it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

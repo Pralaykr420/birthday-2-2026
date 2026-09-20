@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./artifacts/omniscient-love" },
+    { "path": "./artifacts/api-server" },
+    { "path": "./lib/db" }
+  ]
+}
