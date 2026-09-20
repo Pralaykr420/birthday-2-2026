@@ -44,14 +44,14 @@ export const loveConfig = {
   birthday: {
     /** 1 = January, 9 = September, 12 = December. */
     month: 9,
-    day: 20,
+    day: 25,
 
     /**
      * The app watches the clock. At exactly 00:00 on the date above it
      * takes over the screen with the midnight surprise.
      */
-    surpriseHour: 17,
-    surpriseMinute: 31,
+    surpriseHour: 0,
+    surpriseMinute: 0,
   },
 
   /** The day you two started. Used for the "days together" counter. */
